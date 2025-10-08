@@ -1,22 +1,19 @@
-﻿using System.ComponentModel;
-using System.Diagnostics;
-using System.Runtime.CompilerServices;
+﻿using System.Diagnostics;
 
 namespace ImageGenerator
 {
     public partial class MainPage : ContentPage
     {
-        static private bool _isFavorite;
+        private int _currentIndex = -1;
 
-        private Dictionary<string, string> ImageList = new()
-            {
-                {"image1", "Man" },
-                {"image2", "Bird" },
-                {"image3", "Big cat" },
-                {"image4", "Autumn road" },
-                {"image5", "Flowergirl" }
-            };
-
+        private List<Picture> Pictures = new()
+        {
+            new Picture { File = "image1", Name = "Man", IsFavorite = false },
+            new Picture { File = "image2", Name = "Bird", IsFavorite = false },
+            new Picture { File = "image3", Name = "Big cat", IsFavorite = false },
+            new Picture { File = "image4", Name = "Autumn road", IsFavorite = false },
+            new Picture { File = "image5", Name = "Flowergirl" , IsFavorite = false }
+        };
 
         private Random random = new();
 
@@ -32,18 +29,19 @@ namespace ImageGenerator
 
         private void ShowImageAndText()
         {
+            int randomIndex = random.Next(Pictures.Count);
+            Picture randomPicture = Pictures.ElementAt(randomIndex);
+            _currentIndex = randomIndex;
 
-            //var singleKeys = ImageList.Keys.ToList(); // en lokal lista av det första paret i en Dictionary
+            Debug.WriteLine(randomPicture.File + ": " + randomPicture.Name); // för testning i Output
 
-            var pairs = ImageList.ElementAt(random.Next(ImageList.Count));
-
-            Debug.WriteLine(pairs.Key + ": " + pairs.Value); // för testning i Output
-
-            string showKey = GetImageFileEnding(pairs.Key); // detta då enbart Windows kräver filändelse
+            string showKey = GetImageFileEnding(randomPicture.File); // detta då enbart Windows kräver filändelse
 
             ShowGallery.Source = showKey;
 
-            ImageText.Text = pairs.Value;
+            ImageText.Text = randomPicture.Name;
+
+            SetFavoriteButtonState();
         }
 
         private string GetImageFileEnding(string imageKey)
@@ -55,12 +53,10 @@ namespace ImageGenerator
             #endif
         }
 
-
-        private void OnFavoriteClicked(object sender, EventArgs e)
+        private void SetFavoriteButtonState()
         {
-            _isFavorite = !_isFavorite;
-
-            if (_isFavorite)
+            bool isFavorite = Pictures[_currentIndex].IsFavorite;
+            if (isFavorite)
             {
                 FavoriteButton.Source = new FontImageSource
                 {
@@ -80,6 +76,17 @@ namespace ImageGenerator
                     Color = Colors.Gray
                 };
             }
+        }
+
+
+        private void OnFavoriteClicked(object sender, EventArgs e)
+        {
+            if (_currentIndex == -1) return;
+
+            bool isFavorite = Pictures[_currentIndex].IsFavorite;
+            Pictures[_currentIndex].IsFavorite = !isFavorite;
+
+            SetFavoriteButtonState();
         }
 
         //public event PropertyChangedEventHandler PropertyChanged;

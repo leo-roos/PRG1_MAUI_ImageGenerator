@@ -38,7 +38,7 @@ namespace ImageGenerator
 
             ImageText.Text = currentImage.Name;
 
-            ToggleFavorite(currentImage.IsFavorite);
+            SetFavoriteIcon(currentImage.IsFavorite);
         }
 
         private string GetImageFileEnding(string imageKey)
@@ -50,7 +50,7 @@ namespace ImageGenerator
             #endif
         }
 
-        private void ToggleFavorite(bool IsFavorite)
+        private void SetFavoriteIcon(bool IsFavorite)
         {
             if (IsFavorite)
             {
@@ -80,7 +80,7 @@ namespace ImageGenerator
             bool IsFavorite = !currentImage.IsFavorite;
             currentImage.IsFavorite = IsFavorite;
 
-            ToggleFavorite(IsFavorite);
+            SetFavoriteIcon(IsFavorite);
         }
     }
 }

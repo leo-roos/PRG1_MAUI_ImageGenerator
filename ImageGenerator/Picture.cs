@@ -2,8 +2,8 @@
 {
     internal class Picture
     {
-        public string File { get; set; }
-        public string Name { get; set; }
+        public required string File { get; set; }
+        public required string Name { get; set; }
         public bool IsFavorite { get; set; }
     }
 }

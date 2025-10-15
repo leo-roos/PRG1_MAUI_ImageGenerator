@@ -4,11 +4,11 @@ namespace ImageGenerator
 {
     public partial class MainPage : ContentPage
     {
-        static private bool _isFavorite;
-
-        Queue<Picture> ImageList = new Queue<Picture>();
+        private Queue<Picture> ImageList = new Queue<Picture>();
 
         private Random random = new();
+        
+        private Picture currentImage = new Picture { File = "image1", Name = "Man", IsFavorite = false};
 
         public MainPage()
         {
@@ -27,16 +27,18 @@ namespace ImageGenerator
 
         private void ShowImageAndText()
         {
-            Picture randomPicutre = ImageList.Dequeue();
-            ImageList.Enqueue(randomPicutre);
+            currentImage = ImageList.Dequeue();
+            ImageList.Enqueue(currentImage);
 
-            Debug.WriteLine(randomPicutre.File + ": " + randomPicutre.Name); // för testning i Output
+            Debug.WriteLine(currentImage.File + ": " + currentImage.Name); // för testning i Output
 
-            string showKey = GetImageFileEnding(randomPicutre.File); // detta då Windows, men inte till exempel Android, kräver filändelse
+            string showKey = GetImageFileEnding(currentImage.File); // detta då Windows, men inte till exempel Android, kräver filändelse
 
             ShowGallery.Source = showKey;
 
-            ImageText.Text = randomPicutre.Name;
+            ImageText.Text = currentImage.Name;
+
+            ToggleFavorite(currentImage.IsFavorite);
         }
 
         private string GetImageFileEnding(string imageKey)
@@ -48,11 +50,9 @@ namespace ImageGenerator
             #endif
         }
 
-        private void OnFavoriteClicked(object sender, EventArgs e)
+        private void ToggleFavorite(bool IsFavorite)
         {
-            _isFavorite = !_isFavorite;
-
-            if (_isFavorite)
+            if (IsFavorite)
             {
                 FavoriteButton.Source = new FontImageSource
                 {
@@ -72,6 +72,15 @@ namespace ImageGenerator
                     Color = Colors.Gray
                 };
             }
+        }
+
+        private void OnFavoriteClicked(object sender, EventArgs e)
+        {
+            Debug.WriteLine($"Favorite clicked, {currentImage.File}: {currentImage.Name}, {currentImage.IsFavorite}"); // för testning i Output
+            bool IsFavorite = !currentImage.IsFavorite;
+            currentImage.IsFavorite = IsFavorite;
+
+            ToggleFavorite(IsFavorite);
         }
     }
 }

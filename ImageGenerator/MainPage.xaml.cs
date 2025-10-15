@@ -6,21 +6,18 @@ namespace ImageGenerator
     {
         static private bool _isFavorite;
 
-        private Dictionary<string, string> ImageList = new()
-            {
-                {"image1", "Man" },
-                {"image2", "Bird" },
-                {"image3", "Big cat" },
-                {"image4", "Autumn road" },
-                {"image5", "Flowergirl" }
-            };
-
+        Queue<Picture> ImageList = new Queue<Picture>();
 
         private Random random = new();
 
         public MainPage()
         {
             InitializeComponent();
+            ImageList.Enqueue(new Picture { File = "image1", Name = "Man", IsFavorite = false });
+            ImageList.Enqueue(new Picture { File = "image2", Name = "Bird", IsFavorite = false });
+            ImageList.Enqueue(new Picture { File = "image3", Name = "Big cat", IsFavorite = false });
+            ImageList.Enqueue(new Picture { File = "image4", Name = "Autumn road", IsFavorite = false });
+            ImageList.Enqueue(new Picture { File = "image5", Name = "Flowergirl", IsFavorite = false });
         }
 
         private void ImageOnClicked(object? sender, EventArgs e)
@@ -30,15 +27,16 @@ namespace ImageGenerator
 
         private void ShowImageAndText()
         {
-            var pairs = ImageList.ElementAt(random.Next(ImageList.Count));
+            Picture randomPicutre = ImageList.Dequeue();
+            ImageList.Enqueue(randomPicutre);
 
-            Debug.WriteLine(pairs.Key + ": " + pairs.Value); // för testning i Output
+            Debug.WriteLine(randomPicutre.File + ": " + randomPicutre.Name); // för testning i Output
 
-            string showKey = GetImageFileEnding(pairs.Key); // detta då Windows, men inte till exempel Android, kräver filändelse
+            string showKey = GetImageFileEnding(randomPicutre.File); // detta då Windows, men inte till exempel Android, kräver filändelse
 
             ShowGallery.Source = showKey;
 
-            ImageText.Text = pairs.Value;
+            ImageText.Text = randomPicutre.Name;
         }
 
         private string GetImageFileEnding(string imageKey)

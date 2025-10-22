@@ -5,8 +5,8 @@ namespace ImageGenerator
     public partial class MainPage : ContentPage
     {
         private Queue<Picture> ImageList = new Queue<Picture>();
-        
-        private Picture currentImage = new Picture { File = "image1", Name = "Man", IsFavorite = false};
+
+        private Picture currentImage = new Picture { File = "", Name = "", IsFavorite = false };
 
         public MainPage()
         {
@@ -16,6 +16,8 @@ namespace ImageGenerator
             ImageList.Enqueue(new Picture { File = "image3", Name = "Big cat", IsFavorite = false });
             ImageList.Enqueue(new Picture { File = "image4", Name = "Autumn road", IsFavorite = false });
             ImageList.Enqueue(new Picture { File = "image5", Name = "Flowergirl", IsFavorite = false });
+
+            CommentEntry.IsEnabled = false;
         }
 
         private void ImageOnClicked(object? sender, EventArgs e)
@@ -36,7 +38,10 @@ namespace ImageGenerator
 
             ImageText.Text = currentImage.Name;
 
+            CommentEntry.IsEnabled = true;
+            CommentEntry.Text = currentImage.Comment;
             SetFavoriteIcon(currentImage.IsFavorite);
+
         }
 
         private string GetImageFileEnding(string imageKey)
@@ -79,6 +84,11 @@ namespace ImageGenerator
             currentImage.IsFavorite = IsFavorite;
 
             SetFavoriteIcon(IsFavorite);
+        }
+
+        private void Comment_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            currentImage.Comment = CommentEntry.Text;
         }
     }
 }

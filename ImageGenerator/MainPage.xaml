@@ -24,6 +24,8 @@
                 x:Name="ImageText"
                 Style="{StaticResource Headline}" />
 
+            <Entry x:Name="CommentEntry" Placeholder="Comment" MaximumWidthRequest="300" TextChanged="Comment_TextChanged" />
+
             <ImageButton x:Name="FavoriteButton"
                      WidthRequest="40"
                      HeightRequest="40"

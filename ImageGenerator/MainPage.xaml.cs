@@ -13,6 +13,14 @@ namespace ImageGenerator
             new Picture { File = "image3", Name = "Big cat", IsFavorite = false },
             new Picture { File = "image4", Name = "Autumn road", IsFavorite = false },
             new Picture { File = "image5", Name = "Flowergirl" , IsFavorite = false },
+            new Picture { File = "img2350", Name = "Sick Red Cat" , IsFavorite = false },
+            new Picture { File = "img2364", Name = "Broken down car" , IsFavorite = false },
+            new Picture { File = "img2530", Name = "Cow" , IsFavorite = false },
+            new Picture { File = "img2693", Name = "Penguins" , IsFavorite = false },
+            new Picture { File = "img2801", Name = "Dog" , IsFavorite = false },
+            new Picture { File = "img2869", Name = "Lilla Bommen in the Rain" , IsFavorite = false },
+            new Picture { File = "img2888", Name = "Gokart" , IsFavorite = false },
+            new Picture { File = "img2930", Name = "Red Cat Sleeping" , IsFavorite = false },
         };
 
         private Random random = new();

@@ -13,7 +13,7 @@
                 FontSize="26"
                 Style="{StaticResource Headline}"
                 SemanticProperties.HeadingLevel="Level1" />
-            
+
             <Image
                 x:Name="ShowGallery"
                 HeightRequest="240"
@@ -33,7 +33,7 @@
                      Clicked="OnFavoriteClicked"
                      SemanticProperties.Hint="a heart to highlight a favorite image">
                 <ImageButton.Source>
-                    
+
                     <FontImageSource Glyph="&#xE87E;"
                                  FontFamily="MaterialIcons"
                                  Size="32"
@@ -41,12 +41,28 @@
                 </ImageButton.Source>
             </ImageButton>
 
-            <Button
-                Text="Visa ny bild" 
-                SemanticProperties.Hint="showes a new image when you click"
-                Clicked="ImageOnClicked"
-                HorizontalOptions="Fill" />
+            <Grid VerticalOptions="Fill" ColumnSpacing="25">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="20*" />
+                    <ColumnDefinition Width="75*" />
+                </Grid.ColumnDefinitions>
+
+                <Button
+                    x:Name="LastImageButton"
+                    Grid.Column="0"
+                    Text="Visa senaste bild" 
+                    SemanticProperties.Hint="shows the last image"
+                    Clicked="LastImageOnClicked" />
+
+                <Button
+                    Grid.Column="1"
+                    Text="Visa ny bild" 
+                    SemanticProperties.Hint="shows a new image when you click"
+                    Clicked="ImageOnClicked" />
+            </Grid>
         </VerticalStackLayout>
     </ScrollView>
-
 </ContentPage>

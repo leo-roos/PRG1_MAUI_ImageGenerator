@@ -7,6 +7,7 @@ namespace ImageGenerator
         private Queue<Picture> ImageList = new Queue<Picture>();
 
         private Picture currentImage = new Picture { File = "", Name = "", IsFavorite = false };
+        private Picture lastImage = new Picture { File = "", Name = "", IsFavorite = false };
 
         public MainPage()
         {
@@ -18,18 +19,28 @@ namespace ImageGenerator
             ImageList.Enqueue(new Picture { File = "image5", Name = "Flowergirl", IsFavorite = false });
 
             CommentEntry.IsEnabled = false;
+            FavoriteButton.IsEnabled = false;
+            LastImageButton.IsEnabled = false;
         }
 
+        private void LastImageOnClicked(object? sender, EventArgs e)
+        {
+            currentImage = lastImage;
+            ShowImageAndText();
+
+            LastImageButton.IsEnabled = false; // låt inte användaren klicka igen då den kommer visa samma bild
+        }
         private void ImageOnClicked(object? sender, EventArgs e)
         {
+            lastImage = currentImage;
+            currentImage = ImageList.Dequeue();
+            ImageList.Enqueue(currentImage);
+
             ShowImageAndText();
         }
 
         private void ShowImageAndText()
         {
-            currentImage = ImageList.Dequeue();
-            ImageList.Enqueue(currentImage);
-
             Debug.WriteLine(currentImage.File + ": " + currentImage.Name); // för testning i Output
 
             string showKey = GetImageFileEnding(currentImage.File); // detta då Windows, men inte till exempel Android, kräver filändelse
@@ -40,8 +51,14 @@ namespace ImageGenerator
 
             CommentEntry.IsEnabled = true;
             CommentEntry.Text = currentImage.Comment;
+
+            FavoriteButton.IsEnabled = true;
             SetFavoriteIcon(currentImage.IsFavorite);
 
+            if (lastImage.File != "") // default File för ingen bild
+            {
+                LastImageButton.IsEnabled = true;
+            }
         }
 
         private string GetImageFileEnding(string imageKey)

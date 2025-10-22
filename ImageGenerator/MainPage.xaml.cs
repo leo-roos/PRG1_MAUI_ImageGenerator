@@ -56,6 +56,22 @@ namespace ImageGenerator
             ShowImageAndText();
         }
 
+        private void SetLastFavoritedButton()
+        {
+            if (likedImages.Count > 0)
+            {
+                LastFavoritedImageButton.IsEnabled = true;
+                if (ImageList[_currentIndex] == likedImages.Peek())
+                {
+                    LastFavoritedImageButton.IsEnabled = false;
+                }
+            }
+            else
+            {
+                LastFavoritedImageButton.IsEnabled = false;
+            }
+        }
+
         private void ShowImageAndText()
         {
             Picture currentImage = ImageList[_currentIndex];
@@ -73,18 +89,7 @@ namespace ImageGenerator
             FavoriteButton.IsEnabled = true;
             SetFavoriteIcon(currentImage.IsFavorite);
 
-            if (likedImages.Count > 0)
-            {
-                LastFavoritedImageButton.IsEnabled = true;
-                if (ImageList[_currentIndex] == likedImages.Peek())
-                {
-                    LastFavoritedImageButton.IsEnabled = false;
-                }
-            }
-            else
-            {
-                LastFavoritedImageButton.IsEnabled = false;
-            }
+            SetLastFavoritedButton();
         }
 
         private string GetImageFileEnding(string imageKey)
@@ -137,6 +142,7 @@ namespace ImageGenerator
             }
 
             SetFavoriteIcon(IsFavorite);
+            SetLastFavoritedButton();
         }
 
         private void Comment_TextChanged(object sender, TextChangedEventArgs e)

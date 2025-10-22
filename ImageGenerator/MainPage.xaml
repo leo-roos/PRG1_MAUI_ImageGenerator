@@ -41,10 +41,28 @@
                 </ImageButton.Source>
             </ImageButton>
 
-            <Button
-                Text="Visa ny bild" 
-                SemanticProperties.Hint="shows a new image when you click"
-                Clicked="ImageOnClicked" />
+            <Grid VerticalOptions="Fill" ColumnSpacing="25">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="20*" />
+                    <ColumnDefinition Width="75*" />
+                </Grid.ColumnDefinitions>
+
+                <Button
+                    x:Name="LastFavoritedImageButton"
+                    Grid.Column="0"
+                    Text="Visa senaste gillad" 
+                    SemanticProperties.Hint="shows the last favorited image"
+                    Clicked="LastFavoritedOnClicked" />
+
+                <Button
+                    Grid.Column="1"
+                    Text="Visa ny bild" 
+                    SemanticProperties.Hint="shows a new image when you click"
+                    Clicked="ImageOnClicked" />
+            </Grid>
         </VerticalStackLayout>
     </ScrollView>
 </ContentPage>

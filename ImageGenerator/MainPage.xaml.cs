@@ -17,12 +17,26 @@ namespace ImageGenerator
 
         private Random random = new();
 
+        private Stack<Picture> likedImages = new();
+
         public MainPage()
         {
             InitializeComponent();
 
             CommentEntry.IsEnabled = false;
             FavoriteButton.IsEnabled = false;
+            LastFavoritedImageButton.IsEnabled = false;
+        }
+
+        private void LastFavoritedOnClicked(object? sender, EventArgs e)
+        {
+            if (likedImages.Count > 0)
+            {
+                Picture lastFavoriedImage = likedImages.Peek();
+                _currentIndex = ImageList.IndexOf(lastFavoriedImage);
+            }
+
+            ShowImageAndText();
         }
 
         private void ImageOnClicked(object? sender, EventArgs e)
@@ -50,6 +64,19 @@ namespace ImageGenerator
 
             FavoriteButton.IsEnabled = true;
             SetFavoriteIcon(currentImage.IsFavorite);
+
+            if (likedImages.Count > 0)
+            {
+                LastFavoritedImageButton.IsEnabled = true;
+                if (ImageList[_currentIndex] == likedImages.Peek())
+                {
+                    LastFavoritedImageButton.IsEnabled = false;
+                }
+            }
+            else
+            {
+                LastFavoritedImageButton.IsEnabled = false;
+            }
         }
 
         private string GetImageFileEnding(string imageKey)
@@ -91,6 +118,15 @@ namespace ImageGenerator
             Debug.WriteLine($"Favorite clicked, {currentImage.File}: {currentImage.Name}, {currentImage.IsFavorite}"); // för testning i Output
             bool IsFavorite = !currentImage.IsFavorite;
             currentImage.IsFavorite = IsFavorite;
+
+            if (IsFavorite)
+            {
+                likedImages.Push(currentImage);
+            }
+            else if (likedImages.Peek() == currentImage)
+            {
+                likedImages.Pop();
+            }
 
             SetFavoriteIcon(IsFavorite);
         }

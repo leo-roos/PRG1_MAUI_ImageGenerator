@@ -53,7 +53,7 @@
                 <Button
                     x:Name="LastImageButton"
                     Grid.Column="0"
-                    Text="Visa senaste bild" 
+                    Text="Gå tillbaka" 
                     SemanticProperties.Hint="shows the last image"
                     Clicked="LastImageOnClicked" />
 

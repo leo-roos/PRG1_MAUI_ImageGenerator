@@ -4,19 +4,24 @@ namespace ImageGenerator
 {
     public partial class MainPage : ContentPage
     {
-        private Queue<Picture> ImageList = new Queue<Picture>();
+        private int _currentIndex = -1;
 
-        private Picture currentImage = new Picture { File = "", Name = "", IsFavorite = false };
-        private Picture lastImage = new Picture { File = "", Name = "", IsFavorite = false };
+        private List<Picture> ImageList = new()
+        {
+            new Picture { File = "image1", Name = "Man", IsFavorite = false },
+            new Picture { File = "image2", Name = "Bird", IsFavorite = false },
+            new Picture { File = "image3", Name = "Big cat", IsFavorite = false },
+            new Picture { File = "image4", Name = "Autumn road", IsFavorite = false },
+            new Picture { File = "image5", Name = "Flowergirl" , IsFavorite = false }
+        };
+
+        private Random random = new();
+
+        private Queue<Picture> ImageHistory = new Queue<Picture>();
 
         public MainPage()
         {
             InitializeComponent();
-            ImageList.Enqueue(new Picture { File = "image1", Name = "Man", IsFavorite = false });
-            ImageList.Enqueue(new Picture { File = "image2", Name = "Bird", IsFavorite = false });
-            ImageList.Enqueue(new Picture { File = "image3", Name = "Big cat", IsFavorite = false });
-            ImageList.Enqueue(new Picture { File = "image4", Name = "Autumn road", IsFavorite = false });
-            ImageList.Enqueue(new Picture { File = "image5", Name = "Flowergirl", IsFavorite = false });
 
             CommentEntry.IsEnabled = false;
             FavoriteButton.IsEnabled = false;
@@ -25,22 +30,31 @@ namespace ImageGenerator
 
         private void LastImageOnClicked(object? sender, EventArgs e)
         {
-            currentImage = lastImage;
-            ShowImageAndText();
+            ImageHistory = new Queue<Picture>(ImageHistory.Reverse());
+            Picture newPicture = ImageHistory.Dequeue();
+            ImageHistory = new Queue<Picture>(ImageHistory.Reverse());
 
-            LastImageButton.IsEnabled = false; // låt inte användaren klicka igen då den kommer visa samma bild
+            _currentIndex = ImageList.IndexOf(newPicture);
+
+            ShowImageAndText();
         }
         private void ImageOnClicked(object? sender, EventArgs e)
         {
-            lastImage = currentImage;
-            currentImage = ImageList.Dequeue();
-            ImageList.Enqueue(currentImage);
+            if (_currentIndex != -1)
+            {
+                ImageHistory.Enqueue(ImageList[_currentIndex]);
+            }
+
+            int randomIndex = random.Next(ImageList.Count);
+            Picture randomPicture = ImageList.ElementAt(randomIndex);
+            _currentIndex = randomIndex;
 
             ShowImageAndText();
         }
 
         private void ShowImageAndText()
         {
+            Picture currentImage = ImageList[_currentIndex];
             Debug.WriteLine(currentImage.File + ": " + currentImage.Name); // för testning i Output
 
             string showKey = GetImageFileEnding(currentImage.File); // detta då Windows, men inte till exempel Android, kräver filändelse
@@ -55,9 +69,12 @@ namespace ImageGenerator
             FavoriteButton.IsEnabled = true;
             SetFavoriteIcon(currentImage.IsFavorite);
 
-            if (lastImage.File != "") // default File för ingen bild
+            if (ImageHistory.Count > 0)
             {
                 LastImageButton.IsEnabled = true;
+            } else
+            {
+                LastImageButton.IsEnabled = false;
             }
         }
 
@@ -96,6 +113,7 @@ namespace ImageGenerator
 
         private void OnFavoriteClicked(object sender, EventArgs e)
         {
+            Picture currentImage = ImageList[_currentIndex];
             Debug.WriteLine($"Favorite clicked, {currentImage.File}: {currentImage.Name}, {currentImage.IsFavorite}"); // för testning i Output
             bool IsFavorite = !currentImage.IsFavorite;
             currentImage.IsFavorite = IsFavorite;
@@ -105,6 +123,7 @@ namespace ImageGenerator
 
         private void Comment_TextChanged(object sender, TextChangedEventArgs e)
         {
+            Picture currentImage = ImageList[_currentIndex];
             currentImage.Comment = CommentEntry.Text;
         }
     }

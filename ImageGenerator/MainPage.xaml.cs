@@ -12,7 +12,7 @@ namespace ImageGenerator
             new Picture { File = "image2", Name = "Bird", IsFavorite = false },
             new Picture { File = "image3", Name = "Big cat", IsFavorite = false },
             new Picture { File = "image4", Name = "Autumn road", IsFavorite = false },
-            new Picture { File = "image5", Name = "Flowergirl" , IsFavorite = false }
+            new Picture { File = "image5", Name = "Flowergirl" , IsFavorite = false },
         };
 
         private Random random = new();

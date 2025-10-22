@@ -131,9 +131,9 @@ namespace ImageGenerator
             {
                 likedImages.Push(currentImage);
             }
-            else if (likedImages.Peek() == currentImage)
+            else
             {
-                likedImages.Pop();
+                likedImages = new Stack<Picture>(likedImages.Where(p => p != currentImage)); // välj alla bilder förutom currentImage
             }
 
             SetFavoriteIcon(IsFavorite);

@@ -5,8 +5,6 @@ namespace ImageGenerator
     public partial class MainPage : ContentPage
     {
         private Queue<Picture> ImageList = new Queue<Picture>();
-
-        private Random random = new();
         
         private Picture currentImage = new Picture { File = "image1", Name = "Man", IsFavorite = false};
 

@@ -6,7 +6,7 @@ namespace ImageGenerator
     {
         private int _currentIndex = -1;
 
-        private List<Picture> Pictures = new()
+        private List<Picture> ImageList = new()
         {
             new Picture { File = "image1", Name = "Man", IsFavorite = false },
             new Picture { File = "image2", Name = "Bird", IsFavorite = false },
@@ -20,43 +20,50 @@ namespace ImageGenerator
         public MainPage()
         {
             InitializeComponent();
+
+            CommentEntry.IsEnabled = false;
+            FavoriteButton.IsEnabled = false;
         }
 
         private void ImageOnClicked(object? sender, EventArgs e)
         {
+            int randomIndex = random.Next(ImageList.Count);
+            Picture randomPicture = ImageList.ElementAt(randomIndex);
+            _currentIndex = randomIndex;
+
             ShowImageAndText();
         }
 
         private void ShowImageAndText()
         {
-            int randomIndex = random.Next(Pictures.Count);
-            Picture randomPicture = Pictures.ElementAt(randomIndex);
-            _currentIndex = randomIndex;
+            Picture currentImage = ImageList[_currentIndex];
+            Debug.WriteLine(currentImage.File + ": " + currentImage.Name); // för testning i Output
 
-            Debug.WriteLine(randomPicture.File + ": " + randomPicture.Name); // för testning i Output
-
-            string showKey = GetImageFileEnding(randomPicture.File); // detta då enbart Windows kräver filändelse
+            string showKey = GetImageFileEnding(currentImage.File); // detta då Windows, men inte till exempel Android, kräver filändelse
 
             ShowGallery.Source = showKey;
 
-            ImageText.Text = randomPicture.Name;
+            ImageText.Text = currentImage.Name;
 
-            SetFavoriteButtonState();
+            CommentEntry.IsEnabled = true;
+            CommentEntry.Text = currentImage.Comment;
+
+            FavoriteButton.IsEnabled = true;
+            SetFavoriteIcon(currentImage.IsFavorite);
         }
 
         private string GetImageFileEnding(string imageKey)
         {
-            #if WINDOWS
+#if WINDOWS
             return imageKey + ".jpg";
-            #else
+#else
             return imageKey;
-            #endif
+#endif
         }
 
-        private void SetFavoriteButtonState()
+        private void SetFavoriteIcon(bool IsFavorite)
         {
-            bool isFavorite = Pictures[_currentIndex].IsFavorite;
-            if (isFavorite)
+            if (IsFavorite)
             {
                 FavoriteButton.Source = new FontImageSource
                 {
@@ -78,21 +85,20 @@ namespace ImageGenerator
             }
         }
 
-
         private void OnFavoriteClicked(object sender, EventArgs e)
         {
-            if (_currentIndex == -1) return;
+            Picture currentImage = ImageList[_currentIndex];
+            Debug.WriteLine($"Favorite clicked, {currentImage.File}: {currentImage.Name}, {currentImage.IsFavorite}"); // för testning i Output
+            bool IsFavorite = !currentImage.IsFavorite;
+            currentImage.IsFavorite = IsFavorite;
 
-            bool isFavorite = Pictures[_currentIndex].IsFavorite;
-            Pictures[_currentIndex].IsFavorite = !isFavorite;
-
-            SetFavoriteButtonState();
+            SetFavoriteIcon(IsFavorite);
         }
 
-        //public event PropertyChangedEventHandler PropertyChanged;
-
-        //protected void OnPropertyChanged([CallerMemberName] string name = null)
-        //    => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
-
+        private void Comment_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            Picture currentImage = ImageList[_currentIndex];
+            currentImage.Comment = CommentEntry.Text;
+        }
     }
 }

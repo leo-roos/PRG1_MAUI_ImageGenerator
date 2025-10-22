@@ -9,29 +9,31 @@
             Spacing="25">
 
             <Label
-                Text="Image Gallery"
+                Text="Image gallery"
                 FontSize="26"
                 Style="{StaticResource Headline}"
                 SemanticProperties.HeadingLevel="Level1" />
-            
+
             <Image
                 x:Name="ShowGallery"
                 HeightRequest="240"
                 Aspect="AspectFit"
-                SemanticProperties.Description="randomm image gallery" />
+                SemanticProperties.Description="a randomm image from a gallery" />
 
             <Label
                 x:Name="ImageText"
-                Style="{StaticResource Headline}"
-                SemanticProperties.HeadingLevel="Level1" />
-            
+                Style="{StaticResource Headline}" />
+
+            <Entry x:Name="CommentEntry" Placeholder="Comment" MaximumWidthRequest="300" TextChanged="Comment_TextChanged" />
+
             <ImageButton x:Name="FavoriteButton"
                      WidthRequest="40"
                      HeightRequest="40"
                      BackgroundColor="Transparent"
-                     Clicked="OnFavoriteClicked">
+                     Clicked="OnFavoriteClicked"
+                     SemanticProperties.Hint="a heart to highlight a favorite image">
                 <ImageButton.Source>
-                    
+
                     <FontImageSource Glyph="&#xE87E;"
                                  FontFamily="MaterialIcons"
                                  Size="32"
@@ -40,11 +42,9 @@
             </ImageButton>
 
             <Button
-                Text="Ny bild" 
-                SemanticProperties.Hint="showes a new image when you click"
-                Clicked="ImageOnClicked"
-                HorizontalOptions="Fill" />
+                Text="Visa ny bild" 
+                SemanticProperties.Hint="shows a new image when you click"
+                Clicked="ImageOnClicked" />
         </VerticalStackLayout>
     </ScrollView>
-
 </ContentPage>

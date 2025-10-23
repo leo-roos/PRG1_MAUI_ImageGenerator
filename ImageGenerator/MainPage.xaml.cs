@@ -56,6 +56,9 @@ namespace ImageGenerator
             ShowImageAndText();
         }
 
+        /// <summary>
+        /// Aktiverar eller inaktiverar knappen för "Visa senaste gillad" knappen beroende på om det finns några favoritbilder
+        /// </summary>
         private void SetLastFavoritedButton()
         {
             if (likedImages.Count > 0)
@@ -72,6 +75,9 @@ namespace ImageGenerator
             }
         }
 
+        /// <summary>
+        /// Visa bilden och texten för den aktuella bilden i ImageList på skärmen.
+        /// </summary>
         private void ShowImageAndText()
         {
             Picture currentImage = ImageList[_currentIndex];
@@ -92,6 +98,11 @@ namespace ImageGenerator
             SetLastFavoritedButton();
         }
 
+        /// <summary>
+        /// Returnerar filens namn med korrekt filändelse beroende på plattform.
+        /// </summary>
+        /// <param name="imageKey">Fil namn</param>
+        /// <returns>Fil namn med korrekt filändelse</returns>
         private string GetImageFileEnding(string imageKey)
         {
 #if WINDOWS
@@ -101,6 +112,10 @@ namespace ImageGenerator
 #endif
         }
 
+        /// <summary>
+        /// Ändrar favoritikonen beroende på om bilden är favorit eller inte.
+        /// </summary>
+        /// <param name="IsFavorite">Om den aktuella bilden är en favorit</param>
         private void SetFavoriteIcon(bool IsFavorite)
         {
             if (IsFavorite)
